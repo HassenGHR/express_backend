@@ -91,6 +91,18 @@ app.get('/api/cities', (req, res) => {
     res.json(citiesData);
   });
 
+  app.get("/api/wilayas/:wilayaId", async (req, res) => {
+    const wilaya_id = req.params.wilayaId;
+  
+    try {
+      const query = 'SELECT nom FROM wilayas WHERE wilaya_id = $1';
+      const { rows } = await pool.query(query, [wilaya_id]);
+      res.json(rows);
+    } catch (error) {
+      console.error('Error fetching wilayas by wilaya_id:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 // Update the products data
 app.post('/api/update-data', (req, res) => {
   const updatedData = req.body; // Updated data sent from the client
